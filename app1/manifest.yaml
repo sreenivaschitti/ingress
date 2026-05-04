@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: app1
-        image: joindevops/app1:1.0.0
+        image: sreenivaschitti/app1:1.0.0
 ---
 # Service must be NodePort -- old ALB ingress controller uses target-type: instance
 # ALB registers EC2 nodes, traffic comes in on NodePort, then forwards to pod
@@ -31,7 +31,7 @@ kind: Service
 metadata:
   name: app1
 spec:
-  type: NodePort
+  # type: NodePort
   selector:
     project: roboshop
     tier: frontend
