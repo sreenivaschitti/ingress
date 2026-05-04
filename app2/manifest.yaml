@@ -1,41 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1
+  name: app2
   labels:
     project: roboshop
     tier: frontend
-    component: app1
+    component: app2
 spec:
   replicas: 2
   selector:
     matchLabels:
       project: roboshop
       tier: frontend
-      component: app1
+      component: app2
   template:
     metadata:
       labels:
         project: roboshop
         tier: frontend
-        component: app1
+        component: app2
     spec:
       containers:
-      - name: app1
-        image: sreenivaschitti/app1:1.0.0
+      - name: app2
+        image: sreenivaschitti/app2:1.0.0
 ---
 # Service must be NodePort -- old ALB ingress controller uses target-type: instance
 # ALB registers EC2 nodes, traffic comes in on NodePort, then forwards to pod
 apiVersion: v1
 kind: Service
 metadata:
-  name: app1
+  name: app2
 spec:
   # type: NodePort
   selector:
     project: roboshop
     tier: frontend
-    component: app1
+    component: app2
   ports:
   - protocol: TCP
     port: 80
@@ -46,7 +46,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app1
+  name: app2
   annotations:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:442940292368:certificate/fd3a8fa4-1a68-462f-8a34-862a916f08c7
@@ -57,14 +57,14 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-  - host: "app1.chittis.online"
+  - host: "app2.chittis.online"
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: app1
+            name: app2
             port:
               number: 80
 
